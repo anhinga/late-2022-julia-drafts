@@ -104,7 +104,19 @@ Dict{String, Any} with 3 entries:
            rm1 (cons rm2 (cons rm3 rms)))))
 =#
 
-# not done
+#=
+
+cases for c = a+b
+
+if only one of a[k] and b[k] exists, that subtree becomes c[k]
+if a[k] and b[k] are v-values, c[k] = a[k]+b[k] (sum of v-values)
+if a[k] and b[k] are numbers, c[k] = a[k]+b[k] (sum of numbers)
+if a[k] is a v-value and b[k] is a number, c[k]=a[k]+Dict(":number"=>b[k])
+if a[k] is a number and b[k] is a v-value, c[k]=b[k]+Dict(":number"=>a[k])
+
+=#
+
+# not done; perhaps we should just redo this functionally, per above spec
 
 function add_to_v_value!(dense_v_value, sparse_v_value) # dense and sparse here is informal intent only
     summand = deepcopy(sparse_v_value) # because we might reuse subtrees (that's our penalty for using mutable values at all, too easy to create a bug)
