@@ -439,3 +439,38 @@ function mult_mask_lin_comb(mult_mask, v_value)
     end
     result
 end
+
+#=
+
+a bit of tests
+
+julia> a
+Dict{String, Any} with 3 entries:
+  "c" => 2.5
+  "b" => 3.0
+  "a" => 2
+
+julia> mult_mask_lin_comb(a,a)
+Dict{String, Any} with 1 entry:
+  ":number" => 19.25
+
+julia> f
+Dict{String, Any} with 3 entries:
+  "c" => Dict{String, Any}(":number"=>6.0, "u"=>1.0)
+  "b" => 3.0
+  "a" => 2
+
+julia> mult_mask_lin_comb(f,f)
+Dict{String, Any} with 1 entry:
+  ":number" => 50.0
+
+julia> mult_mask_lin_comb(a,f)
+Dict{String, Any} with 2 entries:
+  ":number" => 28.0
+  "u"       => 2.5
+
+julia> mult_mask_lin_comb(f,a)
+Dict{String, Any} with 1 entry:
+  ":number" => 13.0
+
+=#
