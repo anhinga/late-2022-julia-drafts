@@ -274,6 +274,92 @@ function mult_mask_v_value(mult_mask, v_value)
     result
 end
 
+#=
+
+some tests
+
+julia> mult_mask_v_value(a, a)
+Dict{String, Any} with 3 entries:
+  "c" => Dict{String, Any}("u"=>1.0)
+  "b" => 9.0
+  "a" => 4
+
+julia> a
+Dict{String, Any} with 3 entries:
+  "c" => Dict("u"=>1.0)
+  "b" => 3.0
+  "a" => 2
+
+julia> e
+Dict{String, Any} with 1 entry:
+  "c" => 6.0
+
+julia> mult_mask_v_value(e, a)
+Dict{String, Any} with 1 entry:
+  "c" => Dict{String, Any}("u"=>6.0)
+
+julia> mult_mask_v_value(a, e)
+Dict{String, Any}()
+
+julia> mult_mask_v_value(d, a)
+Dict{String, Any}()
+
+julia> f = add_v_values(a, e)
+Dict{String, Any} with 3 entries:
+  "c" => Dict{String, Any}(":number"=>6.0, "u"=>1.0)
+  "b" => 3.0
+  "a" => 2
+
+julia> a
+Dict{String, Any} with 3 entries:
+  "c" => Dict("u"=>1.0)
+  "b" => 3.0
+  "a" => 2
+
+julia> a["c"]=Dict{String, Any}("u"=>2.5)
+Dict{String, Any} with 1 entry:
+  "u" => 2.5
+
+julia> a
+Dict{String, Any} with 3 entries:
+  "c" => Dict{String, Any}("u"=>2.5)
+  "b" => 3.0
+  "a" => 2
+
+julia> mult_mask_v_value(f, a)
+Dict{String, Any} with 3 entries:
+  "c" => Dict{String, Any}("u"=>2.5)
+  "b" => 9.0
+  "a" => 4
+
+julia> mult_mask_v_value(a, f)
+Dict{String, Any} with 3 entries:
+  "c" => Dict{String, Any}("u"=>2.5)
+  "b" => 9.0
+  "a" => 4
+
+julia> a["c"]=2.5
+2.5
+
+julia> a
+Dict{String, Any} with 3 entries:
+  "c" => 2.5
+  "b" => 3.0
+  "a" => 2
+
+julia> mult_mask_v_value(a, f)
+Dict{String, Any} with 3 entries:
+  "c" => Dict{String, Any}(":number"=>15.0, "u"=>2.5)
+  "b" => 9.0
+  "a" => 4
+
+julia> mult_mask_v_value(f, a)
+Dict{String, Any} with 2 entries:
+  "b" => 9.0
+  "a" => 4
+
+=#
+
 # relevant Clojure code from dmm/core.clj
 
 #=
