@@ -11,4 +11,4 @@ Instead the plan is to sketch a port from https://github.com/jsa-aerial/DMM and 
 A mutable quick version in the style of [May-August-2022](https://github.com/anhinga/julia-flux-drafts/tree/main/arxiv-1606-09470-section3/May-August-2022)
 and not a refined carefully designed [jsa-aerial/DMM](https://github.com/jsa-aerial/DMM)
 
-This is still just a sketch.
+This is still just a sketch. We'll keep the first iteration type-free (in line with its Clojure prototype).
