@@ -145,3 +145,19 @@ function add_v_values(a_v_value, b_v_value)
     end	
     result
 end
+
+#=
+a bit of test (need more)
+
+julia> add_v_values(a, a)
+Dict{String, Any} with 3 entries:
+  "c" => Dict{String, Any}("u"=>2.0)
+  "b" => 6.0
+  "a" => 4
+
+julia> a
+Dict{String, Any} with 3 entries:
+  "c" => Dict("u"=>1.0)
+  "b" => 3.0
+  "a" => 2
+=#
