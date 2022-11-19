@@ -135,9 +135,9 @@ function add_v_values(a_v_value, b_v_value)
             if (typeof(a_sub) <: Number) && (typeof(b_sub) <: Number)
                 result[k] = a_sub + b_sub
             elseif typeof(a_sub) <: Number
-                result[k] = add_v_values(b_sub, Dict{String, Any}(":number"=>a_sub[k]))
+                result[k] = add_v_values(b_sub, Dict{String, Any}(":number"=>a_sub))
             elseif typeof(b_sub) <: Number
-                result[k] = add_v_values(a_sub, Dict{String, Any}(":number"=>b_sub[k]))
+                result[k] = add_v_values(a_sub, Dict{String, Any}(":number"=>b_sub))
             else
                 result[k] = add_v_values(a_sub, b_sub)
             end
