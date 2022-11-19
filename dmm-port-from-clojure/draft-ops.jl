@@ -160,4 +160,74 @@ Dict{String, Any} with 3 entries:
   "c" => Dict("u"=>1.0)
   "b" => 3.0
   "a" => 2
+
+julia> b = mult_v_value(-1, a)
+Dict{String, Any} with 3 entries:
+  "c" => Dict{String, Any}("u"=>-1.0)
+  "b" => -3.0
+  "a" => -2
+
+julia> add_v_values(a, b)
+Dict{String, Any} with 3 entries:
+  "c" => Dict{String, Any}("u"=>0.0)
+  "b" => 0.0
+  "a" => 0
+
+julia> add_v_values(b, a)
+Dict{String, Any} with 3 entries:
+  "c" => Dict{String, Any}("u"=>0.0)
+  "b" => 0.0
+  "a" => 0
+
+julia> d = Dict("u"=>-2.0)
+Dict{String, Float64} with 1 entry:
+  "u" => -2.0
+
+julia> add_v_values(a, d)
+Dict{String, Any} with 4 entries:
+  "c" => Dict("u"=>1.0)
+  "b" => 3.0
+  "u" => -2.0
+  "a" => 2
+
+julia> e = Dict("c"=>6.0)
+Dict{String, Float64} with 1 entry:
+  "c" => 6.0
+
+julia> add_v_values(a, c)
+ERROR: UndefVarError: c not defined
+Stacktrace:
+ [1] top-level scope
+   @ REPL[27]:1
+
+julia> add_v_values(a, e)
+ERROR: MethodError: no method matching getindex(::Float64, ::String)
+Closest candidates are:
+  getindex(::Number) at C:\Users\anhin\AppData\Local\Programs\Julia-1.7.3\share\julia\base\number.jl:95
+  getindex(::Number, ::Integer) at C:\Users\anhin\AppData\Local\Programs\Julia-1.7.3\share\julia\base\number.jl:96
+  getindex(::Number, ::Integer...) at C:\Users\anhin\AppData\Local\Programs\Julia-1.7.3\share\julia\base\number.jl:101
+  ...
+Stacktrace:
+ [1] add_v_values(a_v_value::Dict{String, Any}, b_v_value::Dict{String, Float64})
+   @ Main .\REPL[18]:20
+ [2] top-level scope
+   @ REPL[28]:1
+
+julia> e=Dict{String, Any}("c"=>6.0)
+Dict{String, Any} with 1 entry:
+  "c" => 6.0
+
+julia> add_v_values(a, e)
+ERROR: MethodError: no method matching getindex(::Float64, ::String)
+Closest candidates are:
+  getindex(::Number) at C:\Users\anhin\AppData\Local\Programs\Julia-1.7.3\share\julia\base\number.jl:95
+  getindex(::Number, ::Integer) at C:\Users\anhin\AppData\Local\Programs\Julia-1.7.3\share\julia\base\number.jl:96
+  getindex(::Number, ::Integer...) at C:\Users\anhin\AppData\Local\Programs\Julia-1.7.3\share\julia\base\number.jl:101
+  ...
+Stacktrace:
+ [1] add_v_values(a_v_value::Dict{String, Any}, b_v_value::Dict{String, Any})
+   @ Main .\REPL[18]:20
+ [2] top-level scope
+   @ REPL[30]:1
+
 =#
