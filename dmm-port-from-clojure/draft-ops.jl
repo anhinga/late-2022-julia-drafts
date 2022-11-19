@@ -254,6 +254,26 @@ Dict{String, Any} with 3 entries:
           {} mult-mask))
 =#
 
+function mult_mask_v_value(mult_mask, v_value)
+    result = Dict{String, Any}()
+    for k in keys(mult_mask)
+        if haskey(v_value, k)
+            value = v_value[k]
+            mask = mult_mask[k]
+            if (typeof(musk) <: Number) && (typeof(value) <: Number)
+                result[k] = mask*value
+            elseif typeof(mask) <: Number
+                result[k] = mult_v_value(mask, value)
+            elseif typeof(value) <: Number
+                # result[k] is not created
+            else
+                result[k] = mult_mask_v_value(mask, value)
+            end			
+        end
+    end
+    result
+end
+
 # relevant Clojure code from dmm/core.clj
 
 #=
