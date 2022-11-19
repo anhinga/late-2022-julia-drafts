@@ -55,3 +55,26 @@ function mult_v_value(multiplier, v_value)
     end
     result
 end
+
+#=
+test
+
+julia> a = Dict("a"=>2, "b"=>3.0, "c"=>Dict("u"=>1.0))
+Dict{String, Any} with 3 entries:
+  "c" => Dict("u"=>1.0)
+  "b" => 3.0
+  "a" => 2
+
+julia> mult_v_value(5, a)
+Dict{String, Any} with 3 entries:
+  "c" => Dict{String, Any}("u"=>5.0)
+  "b" => 15.0
+  "a" => 10
+
+julia> a
+Dict{String, Any} with 3 entries:
+  "c" => Dict("u"=>1.0)
+  "b" => 3.0
+  "a" => 2
+
+=#
