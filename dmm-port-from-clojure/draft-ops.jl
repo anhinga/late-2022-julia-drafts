@@ -215,3 +215,90 @@ Dict{String, Any} with 3 entries:
   "b" => 3.0
   "a" => 2
 =#
+
+# relevant Clojure code from dmm/core.clj
+
+#=
+;;; generalized multiplicative masks and linear combinations
+
+;;; a recurrent map Mask (mult-mask) and a recurrent map Structured
+;;; Vector (M) traverse the Mask; for each numerical leaf in the Mask,
+;;; if the path corresponding to the leaf exists in the Structured Vector,
+;;; take the result of multiplication of that leaf by the rec-map or
+;;; number corresponding to that path in the Structured Vector.
+;;; Otherwise just drop the path from the result.
+
+;;; note that in the current version if (:number x) is present
+;;; in the mult-mask instead of x, it would not work correctly.
+
+;;; further note: meditate whether equality of a multiplier to 1
+;;; requires a special consideration
+
+(defn rec-map-mult-mask [mult-mask M]
+  (reduce (fn [new-M [k mask]]
+            (let [m (get M k)
+                  actual-M (if (not (mORn? m)) 0 m)
+                  actual-mask (if (not (mORn? mask)) 0 mask)
+                  new-v
+                    (cond
+                      (maps? actual-mask actual-M)
+                      (rec-map-mult-mask actual-mask actual-M)
+
+                      (mANDn? actual-M actual-mask)
+                      (rec-map-mult actual-mask actual-M) ; leaf works!
+
+                      (mANDn? actual-mask actual-M) 0
+                      :else (* actual-M actual-mask))]
+
+              (if (nullelt? new-v) new-M (assoc new-M k new-v))))
+          {} mult-mask))
+=#
+
+# relevant Clojure code from dmm/core.clj
+
+#=
+;;; generalized linear combination - same as above, but compute the
+;;; sum of the resulting vectors corresponding to the leaves in the
+;;; Mask.
+
+;;; right now the way it uses rec-map-sum somewhat ignores large-M vs
+;;; small-M distinction it should not matter correctness-wise, but
+;;; should eventually prompt a meditation efficiency-wise; we did just
+;;; ended the practice of adding a non-trivial map to {} interpreted
+;;; as a large map, so some progress here.
+
+;;; this function is very similar to rec-map-mult-mask, the only
+;;; difference except for its name (and hence recursive call) should
+;;; have been that rec-map-sum is used instead of assoc
+
+;;; but rec-map-sum is current only works for maps, which is why part
+;;; of its functionality is duplicated here - something to meditate
+;;; upon during a code review
+
+(defn rec-map-lin-comb [mult-mask M]
+  (reduce (fn [new-M [k mask]]
+            (let [m (get M k)
+                  actual-M (if (not (mORn? m)) 0 m)
+                  actual-mask (if (not (mORn? mask)) 0 mask)
+                  v-to-add (cond
+                             (maps? actual-mask actual-M)
+                             (rec-map-lin-comb actual-mask actual-M)
+
+                             (mANDn? actual-M actual-mask)
+                             (rec-map-mult actual-mask actual-M) ; leaf works!
+
+                             (mANDn? actual-mask actual-M) 0
+                             :else (* actual-M actual-mask))
+                  new-sum (cond
+                            (map? v-to-add)
+                            (if (= new-M {})
+                              v-to-add
+                              (rec-map-sum new-M v-to-add))
+
+                            (num-nonzero? v-to-add)
+                            (rec-map-sum new-M (numelt v-to-add))
+
+                            :else new-M)]
+              new-sum))
+          {} mult-mask))
+=#
