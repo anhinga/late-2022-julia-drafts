@@ -132,11 +132,11 @@ function add_v_values(a_v_value, b_v_value)
             # remaining processing
             a_sub = a_v_value[k]
             b_sub = b_v_value[k]
-            if (typeof(a_sub) <: number) && (typeof(b_sub) <: number)
+            if (typeof(a_sub) <: Number) && (typeof(b_sub) <: Number)
                 result[k] = a_sub + b_sub
-            elseif typeof(a_sub) <: number
+            elseif typeof(a_sub) <: Number
                 result[k] = add_v_values(b_sub, Dict(":number"=>a_sub[k]))
-            elseif typeof(b_sub) <: number
+            elseif typeof(b_sub) <: Number
                 result[k] = add_v_values(a_sub, Dict(":number"=>b_sub[k]))
             else
                 result[k] = add_v_values(a_sub, b_sub)
