@@ -408,3 +408,34 @@ Dict{String, Any} with 2 entries:
               new-sum))
           {} mult-mask))
 =#
+
+function mult_mask_lin_comb(mult_mask, v_value)
+    result = Dict{String, Any}()
+    for k in keys(mult_mask)
+        if haskey(v_value, k)
+            value = v_value[k]
+            mask = mult_mask[k]
+            new_value = 0
+            if (typeof(mask) <: Number) && (typeof(value) <: Number)
+                new_value = mask*value
+            elseif typeof(mask) <: Number
+                new_value = mult_v_value(mask, value)
+            elseif typeof(value) <: Number
+                # new_value unchanged
+            else
+                new_value = mult_mask_lin_comb(mask, value)
+            end			
+        end
+        # slightly optimized internals of result = add_v_values(result, new_value)
+        if typeof(new_value) <: Dict
+            if isempty(result) # this is the mild optimization mentioned above
+                result = new_value
+            else
+                result = add_v_values(result, new_value) # do I hate doing this in a mutable fashion!
+            end
+        elseif !iszero(new_value) 
+            result = add_v_values(result, Dict{String, Any}(":number"=>new_value)) # does this create more ":number"=> than the original intent?
+        end
+    end
+    result
+end
