@@ -260,7 +260,7 @@ function mult_mask_v_value(mult_mask, v_value)
         if haskey(v_value, k)
             value = v_value[k]
             mask = mult_mask[k]
-            if (typeof(musk) <: Number) && (typeof(value) <: Number)
+            if (typeof(mask) <: Number) && (typeof(value) <: Number)
                 result[k] = mask*value
             elseif typeof(mask) <: Number
                 result[k] = mult_v_value(mask, value)
