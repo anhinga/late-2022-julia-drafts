@@ -46,7 +46,7 @@ end
 function mult_v_value(multiplier, v_value)
     result = Dict{String, Any}()
     for k in keys(v_value)
-        value = v_value(k)
+        value = v_value[k]
         if typeof(value) <: Number
             result[k] = multiplier*value
         else
