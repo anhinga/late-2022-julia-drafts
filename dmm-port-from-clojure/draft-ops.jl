@@ -117,6 +117,7 @@ if a[k] is a number and b[k] is a v-value, c[k]=b[k]+Dict(":number"=>a[k])
 =#
 
 # paying some penalty for not using immutable structures with shared substructure, but OK otherwise
+# except that it's not purging zeros, unlike the Clojure version (this should probably be done separately anyway)
 
 function add_v_values(a_v_value, b_v_value)
     result = Dict{String, Any}()
