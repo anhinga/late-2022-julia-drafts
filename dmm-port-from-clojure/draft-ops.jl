@@ -118,6 +118,35 @@ if a[k] is a number and b[k] is a v-value, c[k]=b[k]+Dict(":number"=>a[k])
 
 # not done; perhaps we should just redo this functionally, per above spec
 
+function add_v_values(a_v_value, b_v_value)
+    result = Dict{String, Any}()
+    for k in keys(b_v_value)
+        if !haskey(a_v_value, k)
+            result[k] = deepcopy(b_v_value[k])
+        end
+    end
+    for k in keys(a_v_value)
+        if !haskey(b_v_value, k)
+            result[k] = deepcopy(a_v_value[k])
+        else
+            # remaining processing
+        end
+    end
+    #=	
+    for k in keys(v_value)
+        value = v_value[k]
+        if typeof(value) <: Number
+            result[k] = multiplier*value
+        else
+            result[k] = mult_v_value(multiplier, value)
+        end
+    end
+    =#
+	
+    result
+end
+
+#= to delete
 function add_to_v_value!(dense_v_value, sparse_v_value) # dense and sparse here is informal intent only
     summand = deepcopy(sparse_v_value) # because we might reuse subtrees (that's our penalty for using mutable values at all, too easy to create a bug)
     for k in keys(summand)
@@ -133,3 +162,4 @@ function add_v_values(dense_v_value, sparse_v_value) # dense and sparse here is 
     add_to_v_value!(result, sparse_v_value)
     result
 end
+=#
