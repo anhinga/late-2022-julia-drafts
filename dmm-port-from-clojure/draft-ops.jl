@@ -43,6 +43,8 @@ end
     (rec-map-op * one? n M)))
 =#
 
+# not doing anything special for multiplier equal to 1 unlike the Clojure version (revisit)
+
 function mult_v_value(multiplier, v_value)
     result = Dict{String, Any}()
     for k in keys(v_value)
@@ -78,3 +80,44 @@ Dict{String, Any} with 3 entries:
   "a" => 2
 
 =#
+
+# relevant Clojure code from dmm/core.clj
+
+#=
+(defn rec-map-sum
+  ([large-M small-M] ; "large" and "small" express intent
+   (reduce (fn [M [k small-v]]
+             (let [large-v (get large-M k)
+                   l-v (if (not (mORn? large-v)) 0 large-v)
+                   s-v (if (not (mORn? small-v)) 0 small-v)
+                   new-v
+                   (cond
+                     (maps? l-v s-v)  (rec-map-sum l-v s-v)
+                     (mANDn? l-v s-v) (rec-map-sum l-v (numelt s-v))
+                     (mANDn? s-v l-v) (rec-map-sum s-v (numelt l-v))
+                     :else (+ l-v s-v))]
+               (if (nullelt? new-v) (dissoc M k) (assoc M k new-v))))
+           large-M small-M))
+  ([rm1 rm2 rm3 & rms]
+   (reduce (fn [new-sum y]
+             (rec-map-sum new-sum y))
+           rm1 (cons rm2 (cons rm3 rms)))))
+=#
+
+# not done
+
+function add_to_v_value!(dense_v_value, sparse_v_value) # dense and sparse here is informal intent only
+    summand = deepcopy(sparse_v_value) # because we might reuse subtrees (that's our penalty for using mutable values at all, too easy to create a bug)
+    for k in keys(summand)
+        subsparse = summand[k]
+        if haskey(dense_v_value, k)
+            subdense
+        dict_to_change[k] = get_N(dict_to_change, k) + multiplier*dict_as_delta[k]
+    end	
+end
+
+function add_v_values(dense_v_value, sparse_v_value) # dense and sparse here is informal intent only
+    result = deepcopy(dense_v_value)
+    add_to_v_value!(result, sparse_v_value)
+    result
+end
