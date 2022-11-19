@@ -116,7 +116,7 @@ if a[k] is a number and b[k] is a v-value, c[k]=b[k]+Dict(":number"=>a[k])
 
 =#
 
-# not done; perhaps we should just redo this functionally, per above spec
+# paying some penalty for not using immutable structures with shared substructure, but OK otherwise
 
 function add_v_values(a_v_value, b_v_value)
     result = Dict{String, Any}()
