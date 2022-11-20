@@ -183,3 +183,24 @@ function apply_v_valued_matrix(v_valued_matrix, v_valued_args, level)
         result
     end
 end
+
+#=
+a test from dmm/core_test.clj
+
+julia> arg_m = Dict("x"=>Dict("a"=>8), "y"=>Dict("b"=>10), "z"=>Dict("a"=>2, "b"=>4))
+Dict{String, Dict{String, Int64}} with 3 entries:
+  "x" => Dict("a"=>8)
+  "z" => Dict("b"=>4, "a"=>2)
+  "y" => Dict("b"=>10)
+
+julia> arg_v = Dict("a"=>3, "b"=>5)
+Dict{String, Int64} with 2 entries:
+  "b" => 5
+  "a" => 3
+
+julia> apply_v_valued_matrix(arg_m, arg_v, 1)
+Dict{String, Any} with 3 entries:
+  "x" => Dict{String, Any}(":number"=>24)
+  "z" => Dict{String, Any}(":number"=>26)
+  "y" => Dict{String, Any}(":number"=>50)
+=#
