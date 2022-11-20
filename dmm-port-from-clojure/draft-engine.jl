@@ -145,3 +145,41 @@ end
 =#
 
 # we must program some versions of down_movement! and up_movement!
+
+# we might use tensor of rank 4 as in dmm-lite.jl or tensor of rank 6 as in dmm/core.clj
+# but the implementation of "down_movement" is much prettier in Clojure than in our Julia dmm-lite.jl
+# so let's create a better Julia implementation
+
+#= Clojure code for down movement (see above for the comments):
+
+(defn apply-matrix [arg-matrix arg-vector level]
+  (if (= level 0)
+    (rec-map-lin-comb arg-matrix arg-vector)
+    (reduce (fn [new-map [k v]]
+              (assoc new-map k (apply-matrix v arg-vector (- level 1))))
+      {} arg-matrix)))
+
+(defn down-movement [function-named-instance-map-of-outputs]
+  (apply-matrix
+   (((function-named-instance-map-of-outputs v-accum) :self) :single); current matrix
+   function-named-instance-map-of-outputs ; arg-vector
+   3))
+
+Here we have a hardcoded setup that the network matrix sits in the :single output of the neuron :self
+It is better to move this information to the implementation of function two_stroke_cycle!
+Then down movement will simply be applying the appropriate matrix to the appropriate vector of v-values at level 2 or 3 depending on our choice.
+
+Hence we only need to port apply-matrix
+=#
+
+function apply_v_valued_matrix(v_valued_matrix, v_valued_args, level)
+    if iszero(level)
+        mult_mask_lin_comb(v_valued_matrix, v_valued_args)
+    else
+        result = Dict{String, Any}()
+        for k in keys(v_valued_matrix)
+            result[k] = apply_v_valued_matrix(v_valued_matrix[k], v_valued_args, level-1)
+        end
+        result
+    end
+end
