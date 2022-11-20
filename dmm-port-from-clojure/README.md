@@ -12,3 +12,12 @@ A mutable quick version in the style of [May-August-2022](https://github.com/anh
 and not a refined carefully designed [jsa-aerial/DMM](https://github.com/jsa-aerial/DMM)
 
 This is still just a sketch. We'll keep the first iteration type-free (in line with its Clojure prototype).
+
+***
+
+`draft-ops.jl`:
+
+  * function `mult_v_value` - port of `rec-map-mult`
+  * function `add_v_values` - port of `rec-map-sum`
+  * function `mult_mask_v_value` - port of `rec-map-mult-mask`
+  * function `mult_mask_lin_comb` - port of `rec-map-lin-comb`
