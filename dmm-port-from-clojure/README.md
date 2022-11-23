@@ -43,4 +43,15 @@ with the actual behavior being set-up dynamically.
 
 Doing it this way would be an upgrade from the Clojure version.
 
+This would result in a **"superfluid"** version of untyped DMMs,
+with neurons really being of a single type (that is, capable of
+"morphing" between types).
+
+An even more advanced version would just use a source code of
+an activation function as an index, but we are not pursuing that
+here: we'll maintain a dictionary of functions (the idea of
+using a function itself for the purpose of indexing which was
+adopted in the Clojure implementation does seem suboptimal from
+our experience back then).
+
 
