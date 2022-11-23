@@ -50,7 +50,7 @@ with neurons really being of a single type (that is, capable of
 An even more advanced version would just use a source code of
 an activation function as an index, but we are not pursuing that
 here: we'll maintain a dictionary of functions (the idea of
-using a function itself for the purpose of indexing which was
+using a function itself for the purpose of indexing which has been
 adopted in the Clojure implementation does seem suboptimal from
 our experience back then).
 
