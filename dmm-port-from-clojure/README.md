@@ -25,3 +25,22 @@ This is still just a sketch. We'll keep the first iteration type-free (in line w
 `draft-engine.jl`:
 
   * function `apply_v_valued_matrix` - port of `apply-matrix`
+  
+***
+
+I am pondering this dichotomy in the `up-movement` (section 2.3, page 5 of https://www.cs.brandeis.edu/~bukatin/dmm-notes-2018.pdf):
+
+"We use 6-dimensional tensors as network matrices in our current implementation
+of DMMs based on V-values and variadic neurons. (We have also considered
+removing the activation function from that and making it a parameter of a
+neuron, with a possibility of using a linear combination of activation functions,
+which would lead to 4-dimensional tensors as network matrices.)"
+
+I think in a dynamically expanding network where one wants to have a countable
+address space for every possible built-in function, the use of a linear combination
+might be a nice option. Then one would truly have just one type of neuron,
+with the actual behavior being set-up dynamically.
+
+Doing it this way would be an upgrade from the Clojure version.
+
+
