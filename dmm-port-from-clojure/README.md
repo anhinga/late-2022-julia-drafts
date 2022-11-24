@@ -54,4 +54,18 @@ using a function itself for the purpose of indexing which has been
 adopted in the Clojure implementation does seem suboptimal from
 our experience back then).
 
+---
+
+The control of the activation function will be done as follows.
+
+In addition to the reserved key `":number", we reserve a key `":function"`.
+
+We require that any activation function acts as identity on this special argument.
+
+By default, for an active neuron there is a weight 1 self-connection for this output-input
+pait, and nothing else connects to this input. (That's how we'll uniformly control whether
+a neuron is active, some non-trivial link to some input is needed for that in our current setup.)
+
+But it is allowed to connect these things differently (and to and from arguments other than
+`":function"`, and that's how "morphing the neuron type" can be achieved.
 
