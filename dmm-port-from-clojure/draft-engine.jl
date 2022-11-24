@@ -234,4 +234,26 @@ from dmm/core.clj
           {} function-named-instance-map))
 
 plus the README remarks about ":function" keyword
+
+assume that there is a global dictionary
+activation_functions("func_name_1"=>func_1, ...)
 =#
+
+# starting to sketch this
+
+function up_movement(all_input_trees)
+    result = Dict{String, Any}()
+    for neuron_name in keys(all_input_trees)
+        input_tree = all_input_trees[neuron_name]
+        dict_of_functions = input_tree[":function"]
+        result[neuron_name] = Dict{String, Any}()
+        for k in dict_of_functions # do I hate doing all this with mutable structures, or what?!
+            summand = mult_v_value(dict_of_functions[k], activation_functions[k](input_tree))
+            result[neuron_name] = add_v_values(result[neuron_name], summand)
+        end
+        result[neuron_name][":function"] = deepcopy(dict_of_functions) # yes, I do hate doing this with mutables
+                                                                       # but it is what it is for now
+                                                                       # (this order of operations enforces ":function" discipline)
+    end
+    result
+end
