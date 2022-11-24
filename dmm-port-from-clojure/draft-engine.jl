@@ -239,7 +239,7 @@ assume that there is a global dictionary
 activation_functions("func_name_1"=>func_1, ...)
 =#
 
-# starting to sketch this
+# starting to sketch the "superfluid" version of up_movement
 
 function up_movement(all_input_trees)
     result = Dict{String, Any}()
