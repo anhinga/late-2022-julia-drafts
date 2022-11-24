@@ -31,9 +31,9 @@ DMM_Lite_ = Dict{String, Dict{String}} # type
 
 function up_movement!(dmm_lite::DMM_Lite_)
     for neuron in values(dmm_lite["neurons"])
-	    # println(neuron)
-		# println("INPUT DICT: ", neuron.input_dict)
-		# println("AFTER FUNCTION APPLICATION: ", neuron.f(neuron.input_dict))
+        # println(neuron)
+        # println("INPUT DICT: ", neuron.input_dict)
+        # println("AFTER FUNCTION APPLICATION: ", neuron.f(neuron.input_dict))
         neuron.output_dict = neuron.f(neuron.input_dict)
     end
 end
@@ -213,9 +213,9 @@ from dmm-lite.jl
 
 function up_movement!(dmm_lite::DMM_Lite_)
     for neuron in values(dmm_lite["neurons"])
-	    # println(neuron)
-		# println("INPUT DICT: ", neuron.input_dict)
-		# println("AFTER FUNCTION APPLICATION: ", neuron.f(neuron.input_dict))
+        # println(neuron)
+        # println("INPUT DICT: ", neuron.input_dict)
+        # println("AFTER FUNCTION APPLICATION: ", neuron.f(neuron.input_dict))
         neuron.output_dict = neuron.f(neuron.input_dict)
     end
 end
