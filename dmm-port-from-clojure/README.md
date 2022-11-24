@@ -58,7 +58,7 @@ our experience back then).
 
 The control of the activation function will be done as follows.
 
-In addition to the reserved key `":number", we reserve a key `":function"`.
+In addition to the reserved key `":number"`, we reserve a key `":function"`.
 
 We require that any activation function acts as identity on this special argument.
 
