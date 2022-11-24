@@ -69,3 +69,5 @@ a neuron is active, some non-trivial link to some input is needed for that in ou
 But it is allowed to connect these things differently (and to and from arguments other than
 `":function"`, and that's how "morphing the neuron type" can be achieved.
 
+So, we don't need a separate "Neuron" data structure anymore": all info about
+the activation function is now within the input vector!
