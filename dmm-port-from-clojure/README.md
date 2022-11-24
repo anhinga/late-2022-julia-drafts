@@ -25,6 +25,7 @@ This is still just a sketch. We'll keep the first iteration type-free (in line w
 `draft-engine.jl`:
 
   * function `apply_v_valued_matrix` - port of `apply-matrix`
+  * function `up_movement` - a "superfluid" version, see below
   
 ***
 
