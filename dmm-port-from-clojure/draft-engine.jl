@@ -204,3 +204,34 @@ Dict{String, Any} with 3 entries:
   "z" => Dict{String, Any}(":number"=>26)
   "y" => Dict{String, Any}(":number"=>50)
 =#
+
+# relevant code for up-movement
+
+#=
+
+from dmm-lite.jl
+
+function up_movement!(dmm_lite::DMM_Lite_)
+    for neuron in values(dmm_lite["neurons"])
+	    # println(neuron)
+		# println("INPUT DICT: ", neuron.input_dict)
+		# println("AFTER FUNCTION APPLICATION: ", neuron.f(neuron.input_dict))
+        neuron.output_dict = neuron.f(neuron.input_dict)
+    end
+end
+
+from dmm/core.clj
+
+(defn apply-to-map-of-named-instances [f named-instance-to-arg-map]
+  (reduce (fn [new-ninstance-arg-map [name arg]]
+            (assoc new-ninstance-arg-map name (f arg)))
+          {} named-instance-to-arg-map))
+
+(defn up-movement [function-named-instance-map]
+  (reduce (fn [new-fnamed-imap [f names-to-args-map]]
+            (assoc new-fnamed-imap f
+                   (apply-to-map-of-named-instances f names-to-args-map)))
+          {} function-named-instance-map))
+
+plus the README remarks about ":function" keyword
+=#
