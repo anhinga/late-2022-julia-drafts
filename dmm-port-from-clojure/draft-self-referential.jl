@@ -25,5 +25,11 @@ include("draft-engine.jl")
 
 =#
 
+function matrix_element(to_neuron, to_input, from_neuron, from_output, value = 1.0)
+    Dict{String, Any}(to_neuron=>Dict{String, Any}(to_input=>Dict{String, Any}(from_neuron=>Dict{String, Any}(from_output=>value))))
+end
+
 function update_1(all_inputs)
-    return Dict{String, Any}("result"=>...
+    return Dict{String, Any}("result"=>add_v_values(matrix_element("self", "delta", "update-1", "result", -1.0),
+                                                    matrix_element("self", "delta", "update-2", "result")))
+end
