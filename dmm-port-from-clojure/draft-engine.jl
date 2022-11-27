@@ -247,7 +247,7 @@ function up_movement(all_input_trees)
         input_tree = all_input_trees[neuron_name]
         dict_of_functions = input_tree[":function"]
         result[neuron_name] = Dict{String, Any}()
-        for k in dict_of_functions # do I hate doing all this with mutable structures, or what?!
+        for k in keys(dict_of_functions) # do I hate doing all this with mutable structures, or what?!
             println("Neuron name: ", neuron_name)
             println("k: ", k)
             summand = mult_v_value(dict_of_functions[k], activation_functions[k](input_tree))
