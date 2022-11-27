@@ -171,9 +171,23 @@ Dict("update-3" => Dict("self" => Dict("delta" => Dict("update-3" => Dict("resul
 
 # We need to write a replacement of
 
+#=
 function two_stroke_cycle!(all_neurons::Dict{String, Neuron}, 
                            network_matrix::Dict{String, Dict{String, Dict{String, Dict{String, Float32}}}})
     down_movement!(all_neurons, network_matrix)
     up_movement!(all_neurons)
 end
 =#
+  
+function two_stroke_cycle(current_output)
+    # down movement
+    new_input = apply_v_valued_matrix(current_input["self"]["result"], current_input, 2)
+    println("===== NEW INPUT:")
+    pprintln(new_input)
+    new_output = up_movement(new_input)    
+    println("***** NEW OUTPUT:")
+    pprintln(new_output)
+    Dict("input"=>new_input, "output"=>new_output)
+end
+
+
