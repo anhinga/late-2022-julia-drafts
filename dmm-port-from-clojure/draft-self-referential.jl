@@ -181,7 +181,7 @@ end
   
 function two_stroke_cycle(current_output)
     # down movement
-    new_input = apply_v_valued_matrix(current_input["self"]["result"], current_input, 2)
+    new_input = apply_v_valued_matrix(current_output["self"]["result"], current_output, 2)
     println("===== NEW INPUT:")
     pprintln(new_input)
     new_output = up_movement(new_input)    
