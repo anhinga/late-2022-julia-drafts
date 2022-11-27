@@ -135,3 +135,24 @@ Dict("update-3" => Dict("self" => Dict("delta" => Dict("update-3" => Dict("resul
      "update-2" => Dict("self" => Dict("delta" => Dict("update-3" => Dict("result" => 1.0),
                                                        "update-2" => Dict("result" => -1.0)))))
 =#
+  
+# the activation functions
+  
+initial_output["self"][":function"] = Dict{String, Any}("accum_add_args"=>1.0)
+  
+initial_output["update-1"][":function"] = Dict{String, Any}("update-1"=>1.0)
+  
+initial_output["update-2"][":function"] = Dict{String, Any}("update-2"=>1.0)
+
+initial_output["update-3"][":function"] = Dict{String, Any}("update-3"=>1.0)
+
+#=
+
+# We need to write a replacement of
+
+function two_stroke_cycle!(all_neurons::Dict{String, Neuron}, 
+                           network_matrix::Dict{String, Dict{String, Dict{String, Dict{String, Float32}}}})
+    down_movement!(all_neurons, network_matrix)
+    up_movement!(all_neurons)
+end
+=#
