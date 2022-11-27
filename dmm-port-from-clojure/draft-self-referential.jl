@@ -120,3 +120,18 @@ initial_output["update-2"] = update_2(nothing)["result"]
 
 initial_output["update-3"] = update_3(nothing)["result"]
   
+#=
+julia> pprint(initial_output)
+Dict("update-3" => Dict("self" => Dict("delta" => Dict("update-3" => Dict("result" => -1.0),
+                                                       "update-1" => Dict("result" => 1.0)))),
+     "self" => Dict("result" => Dict("update-3" => Dict(":function" => Dict("update-3" => Dict(":function" => 1.0))),
+                                     "self" => Dict("accum" => Dict("self" => Dict("result" => 1.0)),
+                                                    ":function" => Dict("self" => Dict(":function" => 1.0)),
+                                                    "delta" => Dict("update-1" => Dict("result" => 1.0))),
+                                     "update-1" => Dict(":function" => Dict("update-1" => Dict(":function" => 1.0))),
+                                     "update-2" => Dict(":function" => Dict("update-2" => Dict(":function" => 1.0))))),
+     "update-1" => Dict("self" => Dict("delta" => Dict("update-1" => Dict("result" => -1.0),
+                                                       "update-2" => Dict("result" => 1.0)))),
+     "update-2" => Dict("self" => Dict("delta" => Dict("update-3" => Dict("result" => 1.0),
+                                                       "update-2" => Dict("result" => -1.0)))))
+=#
