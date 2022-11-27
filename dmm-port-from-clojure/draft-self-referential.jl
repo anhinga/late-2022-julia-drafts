@@ -25,6 +25,10 @@ include("draft-engine.jl")
 
 =#
 
+using PrettyPrinting # need something to alleviate inconvenience
+
+
+
 function matrix_element(to_neuron, to_input, from_neuron, from_output, value = 1.0)
     Dict{String, Any}(to_neuron=>Dict{String, Any}(to_input=>Dict{String, Any}(from_neuron=>Dict{String, Any}(from_output=>value))))
 end
@@ -44,3 +48,9 @@ function update_3(all_inputs)
                                                     matrix_element("self", "delta", "update-1", "result")))
 end
 
+#=
+  
+julia> pprint(update_1(nothing))
+Dict("result" => Dict("self" => Dict("delta" => Dict("update-1" => Dict("result" => -1.0),
+                                                     "update-2" => Dict("result" => 1.0)))))
++#
