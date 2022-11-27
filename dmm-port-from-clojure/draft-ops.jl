@@ -433,7 +433,7 @@ function mult_mask_lin_comb(mult_mask, v_value)
                     result = add_v_values(result, new_value) # do I hate doing this in a mutable fashion!
                 end
                 elseif !iszero(new_value) 
-                result = add_v_values(result, Dict{String, Any}(":number"=>new_value)) # does this create more ":number"=> than the original intent?
+                    result = add_v_values(result, Dict{String, Any}(":number"=>new_value)) # does this create more ":number"=> than the original intent?
             end
         end
     end
