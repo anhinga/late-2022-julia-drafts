@@ -110,7 +110,7 @@ Dict("result" => Dict("update-3" => Dict(":function" => Dict("update-3" => Dict(
                       "update-2" => Dict(":function" => Dict("update-2" => Dict(":function" => 1.0)))))
 =#
   
-initial_output = Dict{String, Any}())
+initial_output = Dict{String, Any}()
 
 initial_output["self"] = deepcopy(init_matrix)
   
