@@ -140,11 +140,11 @@ Dict("update-3" => Dict("self" => Dict("delta" => Dict("update-3" => Dict("resul
   
 initial_output["self"][":function"] = Dict{String, Any}("accum_add_args"=>1.0)
   
-initial_output["update-1"][":function"] = Dict{String, Any}("update-1"=>1.0)
+initial_output["update-1"][":function"] = Dict{String, Any}("update_1"=>1.0)
   
-initial_output["update-2"][":function"] = Dict{String, Any}("update-2"=>1.0)
+initial_output["update-2"][":function"] = Dict{String, Any}("update_2"=>1.0)
 
-initial_output["update-3"][":function"] = Dict{String, Any}("update-3"=>1.0)
+initial_output["update-3"][":function"] = Dict{String, Any}("update_3"=>1.0)
 
 #=
 
