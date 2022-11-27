@@ -90,3 +90,12 @@ end
     
 add_to_init_matrix("self", "accum", "self", "result")
     
+add_to_init_matrix("self", "delta", "update-1", "result")
+  
+add_to_init_matrix("self", ":function", "self", ":function")
+  
+add_to_init_matrix("update-1", ":function", "update-1", ":function") 
+    
+add_to_init_matrix("update-2", ":function", "update-2", ":function") 
+  
+add_to_init_matrix("update-3", ":function", "update-3", ":function") 
