@@ -82,10 +82,10 @@ BUT HOOKS ARE DIFFERENT IN OUR NEW DISCIPLINE
   
 =#
   
-init_matrix = Dict{String, Any}("itself"=>Dict{String, Any}())
+init_matrix = Dict{String, Any}("result"=>Dict{String, Any}())
 
 function add_to_init_matrix(x...)
-    init_matrix["itself"] = add_v_values(init_matrix["itself"], matrix_element(x...))
+    init_matrix["result"] = add_v_values(init_matrix["result"], matrix_element(x...))
 end
     
 add_to_init_matrix("self", "accum", "self", "result")
@@ -99,3 +99,24 @@ add_to_init_matrix("update-1", ":function", "update-1", ":function")
 add_to_init_matrix("update-2", ":function", "update-2", ":function") 
   
 add_to_init_matrix("update-3", ":function", "update-3", ":function") 
+
+#=
+julia> pprint(init_matrix)
+Dict("result" => Dict("update-3" => Dict(":function" => Dict("update-3" => Dict(":function" => 1.0))),
+                      "self" => Dict("accum" => Dict("self" => Dict("result" => 1.0)),
+                                     ":function" => Dict("self" => Dict(":function" => 1.0)),
+                                     "delta" => Dict("update-1" => Dict("result" => 1.0))),
+                      "update-1" => Dict(":function" => Dict("update-1" => Dict(":function" => 1.0))),
+                      "update-2" => Dict(":function" => Dict("update-2" => Dict(":function" => 1.0)))))
+=#
+  
+initial_output = Dict{String, Any}())
+
+initial_output["self"] = deepcopy(init_matrix)
+  
+initial_output["update-1"] = update_1(nothing)["result"]
+  
+initial_output["update-2"] = update_2(nothing)["result"]
+
+initial_output["update-3"] = update_3(nothing)["result"]
+  
