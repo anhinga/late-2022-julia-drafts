@@ -54,3 +54,39 @@ julia> pprint(update_1(nothing))
 Dict("result" => Dict("self" => Dict("delta" => Dict("update-1" => Dict("result" => -1.0),
                                                      "update-2" => Dict("result" => 1.0)))))
 =#
+
+add_activation(update_1)
+add_activation(update_2)
+add_activation(update_3)
+  
+# =======================================================================================================
+  
+#=
+  
+(def init-matrix
+  {v-accum {:self {:accum {v-accum {:self {:single 1}}}}}})
+
+(def update-1-matrix-hook
+  {v-identity {:update-1 {:single {v-identity {:update-1 {:single 1}}}}}})
+
+(def update-2-matrix-hook
+  {v-identity {:update-2 {:single {v-identity {:update-2 {:single 1}}}}}})
+
+(def update-3-matrix-hook
+  {v-identity {:update-3 {:single {v-identity {:update-3 {:single 1}}}}}})
+
+(def start-update-of-network-matrix
+  {v-accum {:self {:delta {v-identity {:update-1 {:single 1}}}}}})
+  
+BUT HOOKS ARE DIFFERENT IN OUR NEW DISCIPLINE
+  
+=#
+  
+init_matrix = Dict{String, Any}("itself"=>Dict{String, Any}())
+
+function add_to_init_matrix(x...)
+    init_matrix["itself"] = add_v_values(init_matrix["itself"], matrix_element(x...))
+end
+    
+add_to_init_matrix("self", "accum", "self", "result")
+    
