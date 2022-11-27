@@ -425,16 +425,16 @@ function mult_mask_lin_comb(mult_mask, v_value)
             else
                 new_value = mult_mask_lin_comb(mask, value)
             end			
-        end
-        # slightly optimized internals of result = add_v_values(result, new_value)
-        if typeof(new_value) <: Dict
-            if isempty(result) # this is the mild optimization mentioned above
-                result = new_value
-            else
-                result = add_v_values(result, new_value) # do I hate doing this in a mutable fashion!
+            # slightly optimized internals of result = add_v_values(result, new_value)
+            if typeof(new_value) <: Dict
+                if isempty(result) # this is the mild optimization mentioned above
+                    result = new_value
+                else
+                    result = add_v_values(result, new_value) # do I hate doing this in a mutable fashion!
+                end
+                elseif !iszero(new_value) 
+                result = add_v_values(result, Dict{String, Any}(":number"=>new_value)) # does this create more ":number"=> than the original intent?
             end
-        elseif !iszero(new_value) 
-            result = add_v_values(result, Dict{String, Any}(":number"=>new_value)) # does this create more ":number"=> than the original intent?
         end
     end
     result
