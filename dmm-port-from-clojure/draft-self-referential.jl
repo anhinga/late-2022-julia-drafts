@@ -148,6 +148,27 @@ initial_output["update-3"][":function"] = Dict{String, Any}("update-3"=>1.0)
 
 #=
 
+THIS IS THE INITIAL STATE OF THE NETWORK
+  
+julia> pprint(initial_output)
+Dict("update-3" => Dict("self" => Dict("delta" => Dict("update-3" => Dict("result" => -1.0),
+                                                       "update-1" => Dict("result" => 1.0))),
+                        ":function" => Dict("update-3" => 1.0)),
+     "self" => Dict(":function" => Dict("accum_add_args" => 1.0),
+                    "result" => Dict("update-3" => Dict(":function" => Dict("update-3" => Dict(":function" => 1.0))),
+                                     "self" => Dict("accum" => Dict("self" => Dict("result" => 1.0)),
+                                                    ":function" => Dict("self" => Dict(":function" => 1.0)),
+                                                    "delta" => Dict("update-1" => Dict("result" => 1.0))),
+                                     "update-1" => Dict(":function" => Dict("update-1" => Dict(":function" => 1.0))),
+                                     "update-2" => Dict(":function" => Dict("update-2" => Dict(":function" => 1.0))))),
+     "update-1" => Dict("self" => Dict("delta" => Dict("update-1" => Dict("result" => -1.0),
+                                                       "update-2" => Dict("result" => 1.0))),
+                        ":function" => Dict("update-1" => 1.0)),
+     "update-2" => Dict("self" => Dict("delta" => Dict("update-3" => Dict("result" => 1.0),
+                                                       "update-2" => Dict("result" => -1.0))),
+                        ":function" => Dict("update-2" => 1.0)))
+=#
+
 # We need to write a replacement of
 
 function two_stroke_cycle!(all_neurons::Dict{String, Neuron}, 
