@@ -114,11 +114,11 @@ initial_output = Dict{String, Any}()
 
 initial_output["self"] = deepcopy(init_matrix)
   
-initial_output["update-1"] = update_1(nothing)["result"]
+initial_output["update-1"] = deepcopy(update_1(nothing))
   
-initial_output["update-2"] = update_2(nothing)["result"]
+initial_output["update-2"] = deepcopy(update_2(nothing))
 
-initial_output["update-3"] = update_3(nothing)["result"]
+initial_output["update-3"] = deepcopy(update_3(nothing))
   
 #=
 julia> pprint(initial_output)
