@@ -22,6 +22,11 @@ This is still just a sketch. We'll keep the first iteration type-free (in line w
   * function `mult_mask_v_value` - port of `rec-map-mult-mask`
   * function `mult_mask_lin_comb` - port of `rec-map-lin-comb`
   
+`draft-activations.jl`:
+
+  * function `accum_add_args`
+  * `activation_functions` : Dict{String, Function}
+  
 `draft-engine.jl`:
 
   * function `apply_v_valued_matrix` - port of `apply-matrix`
