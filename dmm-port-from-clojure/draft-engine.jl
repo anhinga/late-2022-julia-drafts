@@ -239,7 +239,7 @@ assume that there is a global dictionary
 activation_functions("func_name_1"=>func_1, ...)
 =#
 
-# starting to sketch the "superfluid" version of up_movement
+# a preliminary sketch of the "superfluid" version of up_movement
 
 function up_movement(all_input_trees)
     result = Dict{String, Any}()
@@ -248,6 +248,8 @@ function up_movement(all_input_trees)
         dict_of_functions = input_tree[":function"]
         result[neuron_name] = Dict{String, Any}()
         for k in dict_of_functions # do I hate doing all this with mutable structures, or what?!
+            println("Neuron name: ", neuron_name)
+            println("k: ", k)
             summand = mult_v_value(dict_of_functions[k], activation_functions[k](input_tree))
             result[neuron_name] = add_v_values(result[neuron_name], summand)
         end
