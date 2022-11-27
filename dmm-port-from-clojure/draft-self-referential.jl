@@ -33,3 +33,14 @@ function update_1(all_inputs)
     return Dict{String, Any}("result"=>add_v_values(matrix_element("self", "delta", "update-1", "result", -1.0),
                                                     matrix_element("self", "delta", "update-2", "result")))
 end
+  
+function update_2(all_inputs)
+    return Dict{String, Any}("result"=>add_v_values(matrix_element("self", "delta", "update-2", "result", -1.0),
+                                                    matrix_element("self", "delta", "update-3", "result")))
+end
+
+function update_3(all_inputs)
+    return Dict{String, Any}("result"=>add_v_values(matrix_element("self", "delta", "update-3", "result", -1.0),
+                                                    matrix_element("self", "delta", "update-1", "result")))
+end
+
