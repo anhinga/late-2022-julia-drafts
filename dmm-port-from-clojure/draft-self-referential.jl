@@ -1,5 +1,5 @@
 include("draft-ops.jl")
-include("draft_activations.jl")
+include("draft-activations.jl")
 include("draft-engine.jl")
 
 # The goal is to port https://github.com/jsa-aerial/DMM/blob/master/examples/dmm/oct_19_2016_experiment.clj with some mild modifications
