@@ -25,7 +25,8 @@ This is still just a sketch. We'll keep the first iteration type-free (in line w
 `draft-activations.jl`:
 
   * function `accum_add_args`
-
+  * 
+  * ---
   * function `add_activation`
   * `activation_functions` : Dict{String, Function}
   
