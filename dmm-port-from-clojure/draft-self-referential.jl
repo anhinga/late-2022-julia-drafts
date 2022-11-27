@@ -190,4 +190,175 @@ function two_stroke_cycle(current_output)
     Dict("input"=>new_input, "output"=>new_output)
 end
 
+#=
+  
+WORKS NOW  
+               _
+   _       _ _(_)_     |  Documentation: https://docs.julialang.org
+  (_)     | (_) (_)    |
+   _ _   _| |_  __ _   |  Type "?" for help, "]?" for Pkg help.
+  | | | | | | |/ _` |  |
+  | | |_| | | | (_| |  |  Version 1.7.3 (2022-05-06)
+ _/ |\__'_|_|_|\__'_|  |  Official https://julialang.org/ release
+|__/                   |
 
+julia> cd("Desktop/GitHub/late-2022-julia-drafts/dmm-port-from-clojure")
+
+julia> include("draft-self-referential.jl")
+two_stroke_cycle (generic function with 1 method)
+
+julia> pprint(initial_output)
+Dict("update-3" => Dict(":function" => Dict("update_3" => 1.0), "result" => Dict("self" => Dict("delta" => Dict("update-3" => Dict("result" => -1.0), "update-1" => Dict("result" => 1.0))))),
+     "self" => Dict(":function" => Dict("accum_add_args" => 1.0),
+                    "result" => Dict("update-3" => Dict(":function" => Dict("update-3" => Dict(":function" => 1.0))),
+                                     "self" =>
+                                         Dict("accum" => Dict("self" => Dict("result" => 1.0)), ":function" => Dict("self" => Dict(":function" => 1.0)), "delta" => Dict("update-1" => Dict("result" => 1.0))),
+                                     "update-1" => Dict(":function" => Dict("update-1" => Dict(":function" => 1.0))),
+                                     "update-2" => Dict(":function" => Dict("update-2" => Dict(":function" => 1.0))))),
+     "update-1" => Dict(":function" => Dict("update_1" => 1.0), "result" => Dict("self" => Dict("delta" => Dict("update-1" => Dict("result" => -1.0), "update-2" => Dict("result" => 1.0))))),
+     "update-2" => Dict(":function" => Dict("update_2" => 1.0), "result" => Dict("self" => Dict("delta" => Dict("update-3" => Dict("result" => 1.0), "update-2" => Dict("result" => -1.0))))))
+julia> step1 = two_stroke_cycle(initial_output)
+===== NEW INPUT:
+Dict("update-3" => Dict(":function" => Dict("update_3" => 1.0)),
+     "self" => Dict("accum" => Dict("update-3" => Dict(":function" => Dict("update-3" => Dict(":function" => 1.0))),
+                                    "self" =>
+                                        Dict("accum" => Dict("self" => Dict("result" => 1.0)), ":function" => Dict("self" => Dict(":function" => 1.0)), "delta" => Dict("update-1" => Dict("result" => 1.0))),
+                                    "update-1" => Dict(":function" => Dict("update-1" => Dict(":function" => 1.0))),
+                                    "update-2" => Dict(":function" => Dict("update-2" => Dict(":function" => 1.0)))),
+                    ":function" => Dict("accum_add_args" => 1.0),
+                    "delta" => Dict("self" => Dict("delta" => Dict("update-1" => Dict("result" => -1.0), "update-2" => Dict("result" => 1.0))))),
+     "update-1" => Dict(":function" => Dict("update_1" => 1.0)),
+     "update-2" => Dict(":function" => Dict("update_2" => 1.0)))
+Neuron name: update-3
+k: update_3
+Neuron name: self
+k: accum_add_args
+Neuron name: update-1
+k: update_1
+Neuron name: update-2
+k: update_2
+***** NEW OUTPUT:
+Dict("update-3" => Dict(":function" => Dict("update_3" => 1.0), "result" => Dict("self" => Dict("delta" => Dict("update-3" => Dict("result" => -1.0), "update-1" => Dict("result" => 1.0))))),
+     "self" => Dict(":function" => Dict("accum_add_args" => 1.0),
+                    "result" => Dict("update-3" => Dict(":function" => Dict("update-3" => Dict(":function" => 1.0))),
+                                     "self" => Dict("accum" => Dict("self" => Dict("result" => 1.0)),
+                                                    ":function" => Dict("self" => Dict(":function" => 1.0)),
+                                                    "delta" => Dict("update-1" => Dict("result" => 0.0), "update-2" => Dict("result" => 1.0))),
+                                     "update-1" => Dict(":function" => Dict("update-1" => Dict(":function" => 1.0))),
+                                     "update-2" => Dict(":function" => Dict("update-2" => Dict(":function" => 1.0))))),
+     "update-1" => Dict(":function" => Dict("update_1" => 1.0), "result" => Dict("self" => Dict("delta" => Dict("update-1" => Dict("result" => -1.0), "update-2" => Dict("result" => 1.0))))),
+     "update-2" => Dict(":function" => Dict("update_2" => 1.0), "result" => Dict("self" => Dict("delta" => Dict("update-3" => Dict("result" => 1.0), "update-2" => Dict("result" => -1.0))))))
+Dict{String, Dict{String, Any}} with 2 entries:
+  "output" => Dict("update-3"=>Dict{String, Any}(":function"=>Dict{String, Any}("update_3"=>1.0), "result"=>Dict{String, Any}("self"=>Dict{String, Any}("delta"=>Dict{String, Any}("update-3"=>Dict{String, Any}("…
+  "input"  => Dict("update-3"=>Dict{String, Any}(":function"=>Dict{String, Any}("update_3"=>1.0)), "self"=>Dict{String, Any}("accum"=>Dict{String, Any}("update-3"=>Dict{String, Any}(":function"=>Dict{String, An…
+
+julia> step2 = two_stroke_cycle(step1["output"])
+===== NEW INPUT:
+Dict("update-3" => Dict(":function" => Dict("update_3" => 1.0)),
+     "self" => Dict("accum" => Dict("update-3" => Dict(":function" => Dict("update-3" => Dict(":function" => 1.0))),
+                                    "self" => Dict("accum" => Dict("self" => Dict("result" => 1.0)),
+                                                   ":function" => Dict("self" => Dict(":function" => 1.0)),
+                                                   "delta" => Dict("update-1" => Dict("result" => 0.0), "update-2" => Dict("result" => 1.0))),
+                                    "update-1" => Dict(":function" => Dict("update-1" => Dict(":function" => 1.0))),
+                                    "update-2" => Dict(":function" => Dict("update-2" => Dict(":function" => 1.0)))),
+                    ":function" => Dict("accum_add_args" => 1.0),
+                    "delta" => Dict("self" => Dict("delta" => Dict("update-3" => Dict("result" => 1.0), "update-1" => Dict("result" => -0.0), "update-2" => Dict("result" => -1.0))))),
+     "update-1" => Dict(":function" => Dict("update_1" => 1.0)),
+     "update-2" => Dict(":function" => Dict("update_2" => 1.0)))
+Neuron name: update-3
+k: update_3
+Neuron name: self
+k: accum_add_args
+Neuron name: update-1
+k: update_1
+Neuron name: update-2
+k: update_2
+***** NEW OUTPUT:
+Dict("update-3" => Dict(":function" => Dict("update_3" => 1.0), "result" => Dict("self" => Dict("delta" => Dict("update-3" => Dict("result" => -1.0), "update-1" => Dict("result" => 1.0))))),
+     "self" => Dict(":function" => Dict("accum_add_args" => 1.0),
+                    "result" => Dict("update-3" => Dict(":function" => Dict("update-3" => Dict(":function" => 1.0))),
+                                     "self" => Dict("accum" => Dict("self" => Dict("result" => 1.0)),
+                                                    ":function" => Dict("self" => Dict(":function" => 1.0)),
+                                                    "delta" => Dict("update-3" => Dict("result" => 1.0), "update-1" => Dict("result" => 0.0), "update-2" => Dict("result" => 0.0))),
+                                     "update-1" => Dict(":function" => Dict("update-1" => Dict(":function" => 1.0))),
+                                     "update-2" => Dict(":function" => Dict("update-2" => Dict(":function" => 1.0))))),
+     "update-1" => Dict(":function" => Dict("update_1" => 1.0), "result" => Dict("self" => Dict("delta" => Dict("update-1" => Dict("result" => -1.0), "update-2" => Dict("result" => 1.0))))),
+     "update-2" => Dict(":function" => Dict("update_2" => 1.0), "result" => Dict("self" => Dict("delta" => Dict("update-3" => Dict("result" => 1.0), "update-2" => Dict("result" => -1.0))))))
+Dict{String, Dict{String, Any}} with 2 entries:
+  "output" => Dict("update-3"=>Dict{String, Any}(":function"=>Dict{String, Any}("update_3"=>1.0), "result"=>Dict{String, Any}("self"=>Dict{String, Any}("delta"=>Dict{String, Any}("update-3"=>Dict{String, Any}("…
+  "input"  => Dict("update-3"=>Dict{String, Any}(":function"=>Dict{String, Any}("update_3"=>1.0)), "self"=>Dict{String, Any}("accum"=>Dict{String, Any}("update-3"=>Dict{String, Any}(":function"=>Dict{String, An…
+
+julia> step3 = two_stroke_cycle(step2["output"])
+===== NEW INPUT:
+Dict("update-3" => Dict(":function" => Dict("update_3" => 1.0)),
+     "self" => Dict("accum" => Dict("update-3" => Dict(":function" => Dict("update-3" => Dict(":function" => 1.0))),
+                                    "self" => Dict("accum" => Dict("self" => Dict("result" => 1.0)),
+                                                   ":function" => Dict("self" => Dict(":function" => 1.0)),
+                                                   "delta" => Dict("update-3" => Dict("result" => 1.0), "update-1" => Dict("result" => 0.0), "update-2" => Dict("result" => 0.0))),
+                                    "update-1" => Dict(":function" => Dict("update-1" => Dict(":function" => 1.0))),
+                                    "update-2" => Dict(":function" => Dict("update-2" => Dict(":function" => 1.0)))),
+                    ":function" => Dict("accum_add_args" => 1.0),
+                    "delta" => Dict("self" => Dict("delta" => Dict("update-3" => Dict("result" => -1.0), "update-1" => Dict("result" => 1.0), "update-2" => Dict("result" => 0.0))))),
+     "update-1" => Dict(":function" => Dict("update_1" => 1.0)),
+     "update-2" => Dict(":function" => Dict("update_2" => 1.0)))
+Neuron name: update-3
+k: update_3
+Neuron name: self
+k: accum_add_args
+Neuron name: update-1
+k: update_1
+Neuron name: update-2
+k: update_2
+***** NEW OUTPUT:
+Dict("update-3" => Dict(":function" => Dict("update_3" => 1.0), "result" => Dict("self" => Dict("delta" => Dict("update-3" => Dict("result" => -1.0), "update-1" => Dict("result" => 1.0))))),
+     "self" => Dict(":function" => Dict("accum_add_args" => 1.0),
+                    "result" => Dict("update-3" => Dict(":function" => Dict("update-3" => Dict(":function" => 1.0))),
+                                     "self" => Dict("accum" => Dict("self" => Dict("result" => 1.0)),
+                                                    ":function" => Dict("self" => Dict(":function" => 1.0)),
+                                                    "delta" => Dict("update-3" => Dict("result" => 0.0), "update-1" => Dict("result" => 1.0), "update-2" => Dict("result" => 0.0))),
+                                     "update-1" => Dict(":function" => Dict("update-1" => Dict(":function" => 1.0))),
+                                     "update-2" => Dict(":function" => Dict("update-2" => Dict(":function" => 1.0))))),
+     "update-1" => Dict(":function" => Dict("update_1" => 1.0), "result" => Dict("self" => Dict("delta" => Dict("update-1" => Dict("result" => -1.0), "update-2" => Dict("result" => 1.0))))),
+     "update-2" => Dict(":function" => Dict("update_2" => 1.0), "result" => Dict("self" => Dict("delta" => Dict("update-3" => Dict("result" => 1.0), "update-2" => Dict("result" => -1.0))))))
+Dict{String, Dict{String, Any}} with 2 entries:
+  "output" => Dict("update-3"=>Dict{String, Any}(":function"=>Dict{String, Any}("update_3"=>1.0), "result"=>Dict{String, Any}("self"=>Dict{String, Any}("delta"=>Dict{String, Any}("update-3"=>Dict{String, Any}("…
+  "input"  => Dict("update-3"=>Dict{String, Any}(":function"=>Dict{String, Any}("update_3"=>1.0)), "self"=>Dict{String, Any}("accum"=>Dict{String, Any}("update-3"=>Dict{String, Any}(":function"=>Dict{String, An…
+
+julia> step4 = two_stroke_cycle(step3["output"])
+===== NEW INPUT:
+Dict("update-3" => Dict(":function" => Dict("update_3" => 1.0)),
+     "self" => Dict("accum" => Dict("update-3" => Dict(":function" => Dict("update-3" => Dict(":function" => 1.0))),
+                                    "self" => Dict("accum" => Dict("self" => Dict("result" => 1.0)),
+                                                   ":function" => Dict("self" => Dict(":function" => 1.0)),
+                                                   "delta" => Dict("update-3" => Dict("result" => 0.0), "update-1" => Dict("result" => 1.0), "update-2" => Dict("result" => 0.0))),
+                                    "update-1" => Dict(":function" => Dict("update-1" => Dict(":function" => 1.0))),
+                                    "update-2" => Dict(":function" => Dict("update-2" => Dict(":function" => 1.0)))),
+                    ":function" => Dict("accum_add_args" => 1.0),
+                    "delta" => Dict("self" => Dict("delta" => Dict("update-3" => Dict("result" => 0.0), "update-1" => Dict("result" => -1.0), "update-2" => Dict("result" => 1.0))))),
+     "update-1" => Dict(":function" => Dict("update_1" => 1.0)),
+     "update-2" => Dict(":function" => Dict("update_2" => 1.0)))
+Neuron name: update-3
+k: update_3
+Neuron name: self
+k: accum_add_args
+Neuron name: update-1
+k: update_1
+Neuron name: update-2
+k: update_2
+***** NEW OUTPUT:
+Dict("update-3" => Dict(":function" => Dict("update_3" => 1.0), "result" => Dict("self" => Dict("delta" => Dict("update-3" => Dict("result" => -1.0), "update-1" => Dict("result" => 1.0))))),
+     "self" => Dict(":function" => Dict("accum_add_args" => 1.0),
+                    "result" => Dict("update-3" => Dict(":function" => Dict("update-3" => Dict(":function" => 1.0))),
+                                     "self" => Dict("accum" => Dict("self" => Dict("result" => 1.0)),
+                                                    ":function" => Dict("self" => Dict(":function" => 1.0)),
+                                                    "delta" => Dict("update-3" => Dict("result" => 0.0), "update-1" => Dict("result" => 0.0), "update-2" => Dict("result" => 1.0))),
+                                     "update-1" => Dict(":function" => Dict("update-1" => Dict(":function" => 1.0))),
+                                     "update-2" => Dict(":function" => Dict("update-2" => Dict(":function" => 1.0))))),
+     "update-1" => Dict(":function" => Dict("update_1" => 1.0), "result" => Dict("self" => Dict("delta" => Dict("update-1" => Dict("result" => -1.0), "update-2" => Dict("result" => 1.0))))),
+     "update-2" => Dict(":function" => Dict("update_2" => 1.0), "result" => Dict("self" => Dict("delta" => Dict("update-3" => Dict("result" => 1.0), "update-2" => Dict("result" => -1.0))))))
+Dict{String, Dict{String, Any}} with 2 entries:
+  "output" => Dict("update-3"=>Dict{String, Any}(":function"=>Dict{String, Any}("update_3"=>1.0), "result"=>Dict{String, Any}("self"=>Dict{String, Any}("delta"=>Dict{String, Any}("update-3"=>Dict{String, Any}("…
+  "input"  => Dict("update-3"=>Dict{String, Any}(":function"=>Dict{String, Any}("update_3"=>1.0)), "self"=>Dict{String, Any}("accum"=>Dict{String, Any}("update-3"=>Dict{String, Any}(":function"=>Dict{String, An…
+
+julia>  
+=#
