@@ -35,6 +35,8 @@ This is still just a sketch. We'll keep the first iteration type-free (in line w
   * function `apply_v_valued_matrix` - port of `apply-matrix`
   * function `up_movement` - a "superfluid" version, see below
   
+`draft-self-referential.jl`: working initial self-referential experiment
+  
 ***
 
 I am pondering this dichotomy in the `up-movement` (section 2.3, page 5 of https://www.cs.brandeis.edu/~bukatin/dmm-notes-2018.pdf):
