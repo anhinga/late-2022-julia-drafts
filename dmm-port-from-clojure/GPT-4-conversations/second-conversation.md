@@ -79,3 +79,6 @@ GPT-4:
 You're welcome! If you have any more questions or need further help, don't hesitate to ask. Good luck with your project and happy coding!
 
 NOTE: Her understanding of the second request was imperfect, but the generated code is exactly right (and the same as in `test.jl`).
+
+(On the other hand, this `.:` is a bit awkward, with my desire to have "keyword arguments" starting with ":"; so her suggestion
+to `include a colon **instead** of a dot` might make a lot of sense; I'll ponder how to handle this; this is just a start anyway.)
