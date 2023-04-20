@@ -11,10 +11,15 @@ add_to_init_matrix("self", "delta", "update-1", "result")
 What should I write for
 
 self.accum <- self.result
+
 self.delta <- update-1.result
+
 self.function <- self.function
+
 update-1.function <- update-1.function
+
 update-2.function <- update-2.function
+
 update-3.function <- update-3.function
 
 GPT-4:
