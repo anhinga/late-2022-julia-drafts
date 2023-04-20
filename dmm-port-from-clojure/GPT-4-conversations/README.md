@@ -6,3 +6,5 @@
 remarkably enough, it came to the following conclusion at the end of its analysis:
 
 **The main idea of this program is to implement a neural network-like engine using nested dictionaries and custom-defined mathematical operations, allowing for flexible and extensible data processing.**
+
+[second-conversation.md](second-conversation.md) - GPT-4 allows me to define my own syntax without the need to implement any macros or parsing
