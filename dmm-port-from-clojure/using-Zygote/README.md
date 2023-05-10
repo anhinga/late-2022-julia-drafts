@@ -7,7 +7,13 @@ apply_v_valued_matrix(current_output["self"]["result"], current_output, 2)
 ```
 
 and in this particular case in the `loss5` function this has been a quadratic operation with
-non-trivial derivatives both via matrix and via argument, and this has been computed correctly.
+non-trivial derivatives both via matrix and via argument, and this has been computed correctly:
+
+```julia
+julia> this_grad = gradient(loss5, step4)
+loss: 2.0 type of loss: Float64
+(Dict{Any, Any}("output" => Dict{Any, Any}("self" => Dict{Any, Any}("result" => Dict{Any, Any}("self" => Dict{Any, Any}("accum" => Dict{Any, Any}("self" => Dict{Any, Any}("result" => 6.0))))))),)
+```
 
 However, the derivatives through the up-movement are getting lost; the way I am playing with
 functions is too complicated for Zygote, so I should modify this part of the code.
