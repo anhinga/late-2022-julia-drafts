@@ -142,3 +142,10 @@ Dict("result" => Dict("update-3" => Dict(":function" => Dict("update-3" => Dict(
 loss: 3.0 type of loss: Float64
 (Dict{Any, Any}("output" => Dict{Any, Any}("self" => Dict{Any, Any}("result" => Dict{Any, Any}("self" => Dict{Any, Any}("accum" => Dict{Any, Any}("self" => Dict{Any, Any}("result" => 6.0))))))),)
 ```
+
+---
+
+Also here is a bug report:
+
+`accum_add_args(Dict("accum" => 3.0, "delta" => 5.0))` does not work, because the current implementation
+would check `haskey` on a scalar in this case (we are not testing this at the moment, but this needs to be fixed)
