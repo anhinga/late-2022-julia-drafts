@@ -51,22 +51,22 @@ I narrowed the problem down to the following:
 
 ```julia
 function loss7(state)    
-	#new_state = two_stroke_cycle(state["output"])
-	current_output = state["output"]
-	new_input = apply_v_valued_matrix(current_output["self"]["result"], current_output, 2)
-	l1 = state["output"]["self"]["result"]["self"]["accum"]["self"]["result"]
+    #new_state = two_stroke_cycle(state["output"])
+    current_output = state["output"]
+    new_input = apply_v_valued_matrix(current_output["self"]["result"], current_output, 2)
+    l1 = state["output"]["self"]["result"]["self"]["accum"]["self"]["result"]
     l1 = square(l1)
     l = new_input["self"]["accum"]["self"]["accum"]["self"]["result"]
     l = square(l)
-	#new_output = up_movement(new_input)
-	#l2 = new_output["self"]["result"]["self"]["accum"]["self"]["result"]
+    #new_output = up_movement(new_input)
+    #l2 = new_output["self"]["result"]["self"]["accum"]["self"]["result"]
     Zygote.@ignore pprintln(new_input["self"])
-	new_self = accum_add_args(new_input["self"])
+    new_self = accum_add_args(new_input["self"])
     Zygote.@ignore pprintln(new_self)
-	l2 = new_self["result"]["self"]["accum"]["self"]["result"]
-	l2 = square(l2)
-	l_sum = l + l1 + l2
-	Zygote.@ignore println("loss: ", l_sum, " type of loss: ", typeof(l_sum))
+    l2 = new_self["result"]["self"]["accum"]["self"]["result"]
+    l2 = square(l2)
+    l_sum = l + l1 + l2
+    Zygote.@ignore println("loss: ", l_sum, " type of loss: ", typeof(l_sum))
     l_sum
 end	 	 
 ```
