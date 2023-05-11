@@ -149,3 +149,50 @@ Also here is a bug report:
 
 `accum_add_args(Dict("accum" => 3.0, "delta" => 5.0))` does not work, because the current implementation
 would check `haskey` on a scalar in this case (we are not testing this at the moment, but this needs to be fixed)
+
+---
+
+But when we try to localize this `accum_add_args` gradient problem, things do work:
+
+```julia
+julia> c = Dict("accum" => Dict("update-3" => Dict(":function" => Dict("update-3" => Dict(":function" => 1.0))),
+                            "self" => Dict("accum" => Dict("self" => Dict("result" => 1.0)),
+                                           ":function" => Dict("self" => Dict(":function" => 1.0)),
+                                           "delta" => Dict("update-3" => Dict("result" => 0.0),
+                                                           "update-1" => Dict("result" => 0.0),
+                                                           "update-2" => Dict("result" => 1.0))),
+                            "update-1" => Dict(":function" => Dict("update-1" => Dict(":function" => 1.0))),
+                            "update-2" => Dict(":function" => Dict("update-2" => Dict(":function" => 1.0)))),
+            ":function" => Dict("accum_add_args" => 1.0),
+            "delta" => Dict("self" => Dict("delta" => Dict("update-3" => Dict("result" => 1.0),
+                                                           "update-1" => Dict("result" => 0.0),
+                                                           "update-2" => Dict("result" => -1.0)))))
+Dict{String, Dict{String}} with 3 entries:
+  "accum"     => Dict("update-3"=>Dict(":function"=>Dict("update-3"=>Dict(":function"=>1.0))), "self"=>Dict("accum"=>Di…
+  ":function" => Dict("accum_add_args"=>1.0)
+  "delta"     => Dict("self"=>Dict("delta"=>Dict("update-3"=>Dict("result"=>1.0), "update-1"=>Dict("result"=>0.0), "upd…
+  
+julia> pprint(accum_add_args(c))
+Dict("result" => Dict("update-3" => Dict(":function" => Dict("update-3" => Dict(":function" => 1.0))),
+                      "self" => Dict("accum" => Dict("self" => Dict("result" => 1.0)),
+                                     ":function" => Dict("self" => Dict(":function" => 1.0)),
+                                     "delta" => Dict("update-3" => Dict("result" => 1.0),
+                                                     "update-1" => Dict("result" => 0.0),
+                                                     "update-2" => Dict("result" => 0.0))),
+                      "update-1" => Dict(":function" => Dict("update-1" => Dict(":function" => 1.0))),
+                      "update-2" => Dict(":function" => Dict("update-2" => Dict(":function" => 1.0)))))
+                      
+julia> square(x) = x*x
+square (generic function with 1 method)
+
+julia> test_c(x) = square(accum_add_args(x)["result"]["self"]["accum"]["self"]["result"])
+test_c (generic function with 1 method)
+
+julia> test_c(c)
+1.0
+
+julia> gradient(test_c, c)
+(Dict{Any, Any}("accum" => Dict{Any, Any}("self" => Dict{Any, Any}("accum" => Dict{Any, Any}("self" => Dict{Any, Any}("result" => 2.0))))),)                    
+```
+
+So the problem is more subtle - some kind of composition in `loss7`.
