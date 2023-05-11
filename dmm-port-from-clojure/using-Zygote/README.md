@@ -16,7 +16,8 @@ loss: 2.0 type of loss: Float64
 ```
 
 However, the derivatives through the up-movement are getting lost; the way I am playing with
-functions is too complicated for Zygote, so I should modify this part of the code.
+functions is too complicated for Zygote, so I should modify this part of the code. _(That conjecture
+turned out to be incorrect, the error is in something else.)_
 
 Currently I have the following preliminary sketch
 
@@ -148,7 +149,8 @@ loss: 3.0 type of loss: Float64
 Also here is a bug report:
 
 `accum_add_args(Dict("accum" => 3.0, "delta" => 5.0))` does not work, because the current implementation
-would check `haskey` on a scalar in this case (we are not testing this at the moment, but this needs to be fixed)
+would check `haskey` on a scalar in this case (we are not testing this at the moment, but this needs to be fixed).
+_(I filed the first issue in this repository making a note of that.)_
 
 ---
 
@@ -255,7 +257,7 @@ Dict("result" => Dict("update-3" => Dict(":function" => Dict("update-3" => Dict(
                       "update-2" => Dict(":function" => Dict("update-2" => Dict(":function" => 0.99)))))
 loss: 2.9012920199999996 type of loss: Float64
 2.9012920199999996
-...
+```
 
 we see that the true value of derivative should be 10, and not 6 (the presence of two paths via two instances of
-`current_output` propagates to `l2`).
+`current_output` propagates to `l2`). _(It's still unclear what caused the bug, or what might be a workaround.)_
