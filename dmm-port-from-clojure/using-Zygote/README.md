@@ -195,4 +195,67 @@ julia> gradient(test_c, c)
 (Dict{Any, Any}("accum" => Dict{Any, Any}("self" => Dict{Any, Any}("accum" => Dict{Any, Any}("self" => Dict{Any, Any}("result" => 2.0))))),)                    
 ```
 
-So the problem is more subtle - some kind of composition in `loss7`.
+So the problem is more subtle - some kind of composition in `loss7` and Zygote don't play well together.
+
+---
+
+Computing numerical derivative of `loss7` via
+
+```julia
+julia> step4["output"]["self"]["result"]["self"]["accum"]["self"]["result"] += 0.01
+1.01
+
+julia> loss7(step4)
+Dict("accum" => Dict("update-3" => Dict(":function" => Dict("update-3" => Dict(":function" => 1.01))),
+                     "self" => Dict("accum" => Dict("self" => Dict("result" => 1.0201)),
+                                    ":function" => Dict("self" => Dict(":function" => 1.01)),
+                                    "delta" => Dict("update-3" => Dict("result" => 0.0),
+                                                    "update-1" => Dict("result" => 0.0),
+                                                    "update-2" => Dict("result" => 1.01))),
+                     "update-1" => Dict(":function" => Dict("update-1" => Dict(":function" => 1.01))),
+                     "update-2" => Dict(":function" => Dict("update-2" => Dict(":function" => 1.01)))),
+     ":function" => Dict("accum_add_args" => 1.0),
+     "delta" => Dict("self" => Dict("delta" => Dict("update-3" => Dict("result" => 1.0),
+                                                    "update-1" => Dict("result" => 0.0),
+                                                    "update-2" => Dict("result" => -1.0)))))
+Dict("result" => Dict("update-3" => Dict(":function" => Dict("update-3" => Dict(":function" => 1.01))),
+                      "self" => Dict("accum" => Dict("self" => Dict("result" => 1.0201)),
+                                     ":function" => Dict("self" => Dict(":function" => 1.01)),
+                                     "delta" => Dict("update-3" => Dict("result" => 1.0),
+                                                     "update-1" => Dict("result" => 0.0),
+                                                     "update-2" => Dict("result" => 0.010000000000000009))),
+                      "update-1" => Dict(":function" => Dict("update-1" => Dict(":function" => 1.01))),
+                      "update-2" => Dict(":function" => Dict("update-2" => Dict(":function" => 1.01)))))
+loss: 3.1013080200000003 type of loss: Float64
+3.1013080200000003
+
+julia> step4["output"]["self"]["result"]["self"]["accum"]["self"]["result"] -= 0.02
+0.99
+
+julia> loss7(step4)
+Dict("accum" => Dict("update-3" => Dict(":function" => Dict("update-3" => Dict(":function" => 0.99))),
+                     "self" => Dict("accum" => Dict("self" => Dict("result" => 0.9801)),
+                                    ":function" => Dict("self" => Dict(":function" => 0.99)),
+                                    "delta" => Dict("update-3" => Dict("result" => 0.0),
+                                                    "update-1" => Dict("result" => 0.0),
+                                                    "update-2" => Dict("result" => 0.99))),
+                     "update-1" => Dict(":function" => Dict("update-1" => Dict(":function" => 0.99))),
+                     "update-2" => Dict(":function" => Dict("update-2" => Dict(":function" => 0.99)))),
+     ":function" => Dict("accum_add_args" => 1.0),
+     "delta" => Dict("self" => Dict("delta" => Dict("update-3" => Dict("result" => 1.0),
+                                                    "update-1" => Dict("result" => 0.0),
+                                                    "update-2" => Dict("result" => -1.0)))))
+Dict("result" => Dict("update-3" => Dict(":function" => Dict("update-3" => Dict(":function" => 0.99))),
+                      "self" => Dict("accum" => Dict("self" => Dict("result" => 0.9801)),
+                                     ":function" => Dict("self" => Dict(":function" => 0.99)),
+                                     "delta" => Dict("update-3" => Dict("result" => 1.0),
+                                                     "update-1" => Dict("result" => 0.0),
+                                                     "update-2" => Dict("result" => -0.010000000000000009))),
+                      "update-1" => Dict(":function" => Dict("update-1" => Dict(":function" => 0.99))),
+                      "update-2" => Dict(":function" => Dict("update-2" => Dict(":function" => 0.99)))))
+loss: 2.9012920199999996 type of loss: Float64
+2.9012920199999996
+...
+
+we see that the true value of derivative should be 10, and not 6 (the presence of two paths via two instances of
+`current_output` propagates to `l2`).
