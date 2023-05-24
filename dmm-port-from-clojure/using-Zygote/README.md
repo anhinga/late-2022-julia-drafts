@@ -261,3 +261,87 @@ loss: 2.9012920199999996 type of loss: Float64
 
 we see that the true value of derivative should be 10, and not 6 (the presence of two paths via two instances of
 `current_output` propagates to `l2`). _(It's still unclear what caused the bug, or what might be a workaround.)_
+
+---
+
+Simplyfying further (still have the same bug):
+
+```julia
+function copy_accum(all_inputs)
+    all_outputs = Dict{String, Any}()
+    all_outputs["result"] = deepcopy(all_inputs["accum"])
+    all_outputs
+end
+
+
+function loss8(state)    
+    #new_state = two_stroke_cycle(state["output"])
+    current_output = state["output"]
+    new_input = apply_v_valued_matrix(current_output["self"]["result"], current_output, 2)
+    l1 = state["output"]["self"]["result"]["self"]["accum"]["self"]["result"]
+    l1 = square(l1)
+    l = new_input["self"]["accum"]["self"]["accum"]["self"]["result"]
+    l = square(l)
+    #new_output = up_movement(new_input)
+    #l2 = new_output["self"]["result"]["self"]["accum"]["self"]["result"]
+    Zygote.@ignore pprintln(new_input["self"])
+    new_self = copy_accum(new_input["self"])
+    Zygote.@ignore pprintln(new_self)
+    l2 = new_self["result"]["self"]["accum"]["self"]["result"]
+    l2 = square(l2)
+    l_sum = l + l1 + l2
+    Zygote.@ignore println("loss: ", l_sum, " type of loss: ", typeof(l_sum))
+    l_sum
+end
+```
+
+```julia
+julia> loss8(step4)
+Dict("accum" => Dict("update-3" => Dict(":function" => Dict("update-3" => Dict(":function" => 1.0))),
+                     "self" => Dict("accum" => Dict("self" => Dict("result" => 1.0)),
+                                    ":function" => Dict("self" => Dict(":function" => 1.0)),
+                                    "delta" => Dict("update-3" => Dict("result" => 0.0),
+                                                    "update-1" => Dict("result" => 0.0),
+                                                    "update-2" => Dict("result" => 1.0))),
+                     "update-1" => Dict(":function" => Dict("update-1" => Dict(":function" => 1.0))),
+                     "update-2" => Dict(":function" => Dict("update-2" => Dict(":function" => 1.0)))),
+     ":function" => Dict("accum_add_args" => 1.0),
+     "delta" => Dict("self" => Dict("delta" => Dict("update-3" => Dict("result" => 1.0),
+                                                    "update-1" => Dict("result" => 0.0),
+                                                    "update-2" => Dict("result" => -1.0)))))
+Dict("result" => Dict("update-3" => Dict(":function" => Dict("update-3" => Dict(":function" => 1.0))),
+                      "self" => Dict("accum" => Dict("self" => Dict("result" => 1.0)),
+                                     ":function" => Dict("self" => Dict(":function" => 1.0)),
+                                     "delta" => Dict("update-3" => Dict("result" => 0.0),
+                                                     "update-1" => Dict("result" => 0.0),
+                                                     "update-2" => Dict("result" => 1.0))),
+                      "update-1" => Dict(":function" => Dict("update-1" => Dict(":function" => 1.0))),
+                      "update-2" => Dict(":function" => Dict("update-2" => Dict(":function" => 1.0)))))
+loss: 3.0 type of loss: Float64
+3.0
+
+julia> gradient(loss8, step4)
+Dict("accum" => Dict("update-3" => Dict(":function" => Dict("update-3" => Dict(":function" => 1.0))),
+                     "self" => Dict("accum" => Dict("self" => Dict("result" => 1.0)),
+                                    ":function" => Dict("self" => Dict(":function" => 1.0)),
+                                    "delta" => Dict("update-3" => Dict("result" => 0.0),
+                                                    "update-1" => Dict("result" => 0.0),
+                                                    "update-2" => Dict("result" => 1.0))),
+                     "update-1" => Dict(":function" => Dict("update-1" => Dict(":function" => 1.0))),
+                     "update-2" => Dict(":function" => Dict("update-2" => Dict(":function" => 1.0)))),
+     ":function" => Dict("accum_add_args" => 1.0),
+     "delta" => Dict("self" => Dict("delta" => Dict("update-3" => Dict("result" => 1.0),
+                                                    "update-1" => Dict("result" => 0.0),
+                                                    "update-2" => Dict("result" => -1.0)))))
+Dict("result" => Dict("update-3" => Dict(":function" => Dict("update-3" => Dict(":function" => 1.0))),
+                      "self" => Dict("accum" => Dict("self" => Dict("result" => 1.0)),
+                                     ":function" => Dict("self" => Dict(":function" => 1.0)),
+                                     "delta" => Dict("update-3" => Dict("result" => 0.0),
+                                                     "update-1" => Dict("result" => 0.0),
+                                                     "update-2" => Dict("result" => 1.0))),
+                      "update-1" => Dict(":function" => Dict("update-1" => Dict(":function" => 1.0))),
+                      "update-2" => Dict(":function" => Dict("update-2" => Dict(":function" => 1.0)))))
+loss: 3.0 type of loss: Float64
+(Dict{Any, Any}("output" => Dict{Any, Any}("self" => Dict{Any, Any}("result" => Dict{Any, Any}("self" => Dict{Any, Any}("accum" => Dict{Any, Any}("self" => Dict{Any, Any}("result" => 6.0))))))),)
+```
+
