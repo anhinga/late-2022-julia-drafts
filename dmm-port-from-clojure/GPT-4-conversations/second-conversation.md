@@ -1,3 +1,5 @@
+https://chat.openai.com/share/30fd5ad4-8e0f-4377-9dd5-e13d521df8d4
+
 ME:
 
 Hi, I am coding the connections in a neural machine, and when I want to connect things like this
