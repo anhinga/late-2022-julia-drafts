@@ -357,3 +357,5 @@ julia> this_grad
 ```
 
 But the gradient in `gradient(loss8, step4)` is still 6.0 and not 10.0
+
+So, this (superficially) looks like some of these problems got fixed since May 2023, but not all of them (a closer investigation is desirable).
