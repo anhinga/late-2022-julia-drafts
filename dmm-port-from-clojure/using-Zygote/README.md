@@ -345,3 +345,15 @@ loss: 3.0 type of loss: Float64
 (Dict{Any, Any}("output" => Dict{Any, Any}("self" => Dict{Any, Any}("result" => Dict{Any, Any}("self" => Dict{Any, Any}("accum" => Dict{Any, Any}("self" => Dict{Any, Any}("result" => 6.0))))))),)
 ```
 
+---
+
+**Oct 10-11, 2024 update with Julia 1.10.5 and Julia 1.11.0 and Zygote 0.6.71:**
+
+Uncommenting the last computations in [first-attempt.jl](first-attempt.jl) one gets the following rather than `(nothing,)`:
+
+```
+julia> this_grad
+(Dict{Any, Any}("output" => Dict{Any, Any}("self" => Dict{Any, Any}("result" => Dict{Any, Any}("self" => Dict{Any, Any}("accum" => Dict{Any, Any}("self" => Dict{Any, Any}("result" => 1.0))))))),)
+```
+
+But the gradient in `gradient(loss8, step4)` is still 6.0 and not 10.0
